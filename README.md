@@ -1,1 +1,39 @@
 # Invoicy-backend
+
+## Creating a virtual environment
+To create a virtual environment, run the following commands:
+
+    python3 -m venv venv
+    source venv/bin/actiavte
+
+## Installing dependencies
+To install dependencies, run the following command:
+
+    pip install requirements.txt
+
+## Setting up MySQL client
+
+Create a new database in MySQL.
+
+### Connecting to MySQL
+To connect to MySQL, run the following command:
+
+    mysql -u root -p
+
+### Creating a new database
+To create a new database, run the following command:
+
+    CREATE DATABASE <name>;
+
+
+## Updating the environment
+To update the environment, run the following commands:
+
+    cd invoicy
+    cp .env.example .env
+
+Update the fields in .env file as follows:
+
+    DATABASE_NAME=<db-name>
+    DATABASE_USER=<db-user>
+    DATABASE_PASS=<db-password>
