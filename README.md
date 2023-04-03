@@ -26,7 +26,7 @@ To create a new database, run the following command:
     CREATE DATABASE <name>;
 
 
-## Updating the environment
+## Updating the environment variables
 To update the environment, run the following commands:
 
     cd invoicy
@@ -37,3 +37,14 @@ Update the fields in .env file as follows:
     DATABASE_NAME=<db-name>
     DATABASE_USER=<db-user>
     DATABASE_PASS=<db-password>
+
+## Migrating the Database
+To migrate the database, run the following commands:
+
+    python manage.py makemigrations
+    python manage.py migrate
+
+## Starting the server
+To start the server, run the following command:
+
+    python manage.py runserver
