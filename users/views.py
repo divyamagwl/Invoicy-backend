@@ -3,14 +3,19 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 from users.models import CustomUser
-from users.serializers import UserRegistrationSerializer, UserLoginSerializer, UserUpdateSerializer, UpdatePasswordSerializer
+from users.serializers import UsersSerializer, UserRegistrationSerializer, UserLoginSerializer, UserUpdateSerializer, UpdatePasswordSerializer
 from users.permissions import IsOwnerOrReadOnly
 
 from django.contrib.auth import login
 from rest_framework.authentication import TokenAuthentication
 
 
-class UsersAPI(generics.ListCreateAPIView):
+class UsersListAPI(generics.ListCreateAPIView):
+    serializer_class = UsersSerializer
+    queryset = CustomUser.objects.all()
+
+
+class RegisterAPI(generics.ListCreateAPIView):
     """
     This view provides 'list' for all users and 'create' new users.
     """
@@ -30,7 +35,7 @@ class UsersAPI(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LoginView(generics.GenericAPIView):
+class LoginAPI(generics.GenericAPIView):
     serializer_class = UserLoginSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.AllowAny,)

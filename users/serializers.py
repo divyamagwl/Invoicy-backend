@@ -1,8 +1,13 @@
 from rest_framework import serializers
-from rest_framework.reverse import reverse
 from django.contrib.auth import authenticate
 
 from .models import CustomUser
+
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'company_name', 'username', 'email')
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
