@@ -1,4 +1,4 @@
-from rest_framework import generics, status, permissions
+from rest_framework import generics, status, permissions, views
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
@@ -96,3 +96,13 @@ class UpdatePassword(generics.UpdateAPIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class LogoutAPI(views.APIView):
+    def get(self, request, format=None):
+        request.session.flush() # Removes Session from Storage
+        try:
+            request.user.auth_token.delete() # Deletes Token for current logged in user
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
