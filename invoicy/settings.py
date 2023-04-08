@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users.apps.UsersConfig',
     'clients.apps.ClientsConfig',
+    'invoices.apps.InvoicesConfig',
 ]
 
 MIDDLEWARE = [

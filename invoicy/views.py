@@ -10,4 +10,5 @@ def api_root(request, format=None):
         'login': reverse('user-login', request=request, format=format),
         'add-client': reverse('add-client', request=request, format=format),
         'fetch-clients': reverse('fetch-clients', request=request, format=format),
+        'add-invoice': reverse('add-invoice', request=request, format=format),
     })

@@ -24,5 +24,6 @@ urlpatterns = [
     path('', views.api_root, name='home'), #Home page of API root
     path('', include('users.urls')),
     path('', include('clients.urls')),
+    path('', include('invoices.urls')),
     path('api/', include('rest_framework.urls')),
 ]
