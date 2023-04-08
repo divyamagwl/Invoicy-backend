@@ -29,3 +29,12 @@ class InvoiceDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Invoice.objects.filter(user=self.request.user)
+
+
+class ClientInvoicesListAPI(generics.ListAPIView):
+    serializer_class = InvoiceDetailsSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        client = self.kwargs.get('client')
+        return Invoice.objects.filter(user=self.request.user, client=client)
