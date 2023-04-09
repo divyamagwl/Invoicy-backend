@@ -1,0 +1,30 @@
+version: "1"
+services:
+  web:
+    depends_on:
+      - mysql_db
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: invoicy:v1
+    environment:
+      - PORT=8020
+    env_file:
+      - ./backend/invoicy/.env
+    ports:
+      - "8001:8020"
+    command: sh -c "sleep 10 && chmod +x /app/migrate.sh && sh /app/migrate.sh && sh /app/entrypoint.sh"
+  mysql_db:
+    image: mysql
+    restart: always
+    env_file:
+      - ./backend/invoicy/.env
+    expose:
+      - 3306
+    ports:
+      - "127.0.0.1:3333:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

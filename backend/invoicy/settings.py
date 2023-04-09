@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(env('DEBUG')) == "1"
 
 ALLOWED_HOSTS = []
 
@@ -84,14 +84,36 @@ WSGI_APPLICATION = 'invoicy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASS'),
-        'HOST':'localhost',
-        'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DB_DATABASE = env('MYSQL_DATABASE')
+DB_USERNAME = env('MYSQL_USER')
+DB_PASSWORD = env('MYSQL_PASSWORD')
+DB_HOST = env('MYSQL_ROOT_HOST')
+DB_PORT = env('MYSQL_PORT')
+
+DB_IS_AVAIL = all([
+    DB_DATABASE,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_HOST,
+    DB_PORT
+])
+
+if DB_IS_AVAIL:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": DB_DATABASE,
+            "USER": DB_USERNAME,
+            "PASSWORD": DB_PASSWORD,
+            "HOST": DB_HOST,
+            "PORT": DB_PORT,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
