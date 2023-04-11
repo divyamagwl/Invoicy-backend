@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invoicy-backend-deployment
+  labels:
+    app: invoicy-backend-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: invoicy-backend-deployment
+  template:
+    metadata:
+      labels:
+        app: invoicy-backend-deployment
+    spec:
+      containers:
+      - name: invoicy-backend
+        image: divyamagwl/invoicy-backend:latest
+        imagePullPolicy: Always
+        envFrom:
+          - secretRef:
+              name: invoicy-backend-prod-env
+        env:
+          - name: PORT
+            value: "8002"
+        ports:
+        - containerPort: 8002
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoicy-backend-service
+spec:
+  selector:
+    app: invoicy-backend-deployment
+  type: LoadBalancer
+  loadBalancerIP: "0.0.0.0"
+  ports:
+    - protocol: TCP
+      port: 8002
+      targetPort: 8002
+      nodePort: 30000

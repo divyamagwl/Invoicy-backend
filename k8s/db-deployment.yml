@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-db-deployment
+  labels:
+    app: mysql-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db-deployment
+  template:
+    metadata:
+      labels:
+        app: mysql-db-deployment
+    spec:
+      containers:
+      - name: mysql-db
+        image: mysql
+        envFrom:
+          - secretRef:
+              name: invoicy-backend-prod-env
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mysql-db-volume
+      volumes:
+        - name: mysql-db-volume
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-db-service
+spec:
+  selector:
+    app: mysql-db
+  ports:
+    - port: 3306
+      targetPort: 3306
