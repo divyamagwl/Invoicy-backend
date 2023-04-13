@@ -67,6 +67,14 @@ class UsersDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     lookup_field = 'username'
 
+class UsersDetailByIDAPI(generics.RetrieveUpdateDestroyAPIView):
+    """
+    This view provides 'retrieve', 'update', 'destroy' actions to appropriate users.
+    """
+    serializer_class = UserUpdateSerializer
+    queryset = CustomUser.objects.all()
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    lookup_field = 'id'
 
 class UpdatePassword(generics.UpdateAPIView):
     """

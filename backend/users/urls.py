@@ -7,5 +7,6 @@ urlpatterns = [
     path('logout/', views.LogoutAPI.as_view(), name='user-logout'),
     path("fetch-users/", views.UsersListAPI.as_view(), name='fetch-users'),
     path("users/<username>/", views.UsersDetailAPI.as_view(), name='user-detail'),
+    path("users/id/<id>/", views.UsersDetailByIDAPI.as_view(), name='user-detail-by-id'),
     path("users/<username>/update-password/", views.UpdatePassword.as_view(), name='user-update-password')
 ]
