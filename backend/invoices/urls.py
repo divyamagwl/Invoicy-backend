@@ -7,4 +7,5 @@ urlpatterns = [
     path("fetch-invoices/", views.InvoicesListAPI.as_view(), name='fetch-invoices'),
     path("invoice/<id>/", views.InvoiceDetailAPI.as_view(), name='invoice-detail'),
     path("client-invoice/<client>/", views.ClientInvoicesListAPI.as_view(), name='client-invoices'),
+    path("fetch-bills/", views.BillsListAPI.as_view(), name='my-bills'),
 ]

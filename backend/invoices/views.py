@@ -38,3 +38,11 @@ class ClientInvoicesListAPI(generics.ListAPIView):
     def get_queryset(self):
         client = self.kwargs.get('client')
         return Invoice.objects.filter(user=self.request.user, client=client)
+
+
+class BillsListAPI(generics.ListAPIView):
+    serializer_class = InvoiceDetailsSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Invoice.objects.filter(client=self.request.user)
