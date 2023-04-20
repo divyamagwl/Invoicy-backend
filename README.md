@@ -4,12 +4,12 @@
 To create a virtual environment, run the following commands:
 
     python3 -m venv venv
-    source venv/bin/actiavte
+    source venv/bin/activate
 
 ## Installing dependencies
 To install dependencies, run the following command:
 
-    pip install requirements.txt
+    pip install -r requirements.txt
 
 ## Setting up MySQL client
 
