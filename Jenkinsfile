@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    environment
+    {
+        registry = "divyamagwl/invoicy-backend"
+        registryCredential = "dockerhub"
+        dockerImage = ""
+    }
+
+    stages {
+        stage('Pull GitHub') {
+            steps {
+                git branch: 'main', url: 'https://github.com/divyamagwl/Invoicy-backend'
+            }
+        }
+        stage('Docker Image Build') {
+            steps {
+                dir("backend/") {
+                    script {
+                        dockerImage = docker.build(registry + ":latest")
+                    }
+                }
+            }
+        }
+        stage('DockerHub Image Push') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+    }
+}
