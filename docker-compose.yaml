@@ -1,20 +1,22 @@
 version: "1"
 services:
-  web:
+  backend:
+    container_name: invoicy-backend
     depends_on:
       - mysql_db
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: invoicy:v1
+    image: divyamagwl/invoicy-backend
     environment:
-      - PORT=8020
+      - PORT=8000
     env_file:
       - ./backend/invoicy/.env
     ports:
-      - "8001:8020"
+      - "8000:8000"
     command: sh -c "sleep 10 && chmod +x /app/migrate.sh && sh /app/migrate.sh && sh /app/entrypoint.sh"
   mysql_db:
+    container_name: invoicy-mysql-db
     image: mysql
     restart: always
     env_file:

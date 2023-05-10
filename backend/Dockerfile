@@ -4,7 +4,7 @@ COPY . /app
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3-dev default-libmysqlclient-dev build-essential
+    python3-dev default-libmysqlclient-dev build-essential iputils-ping -y
 
 RUN python3 -m venv /opt/venv
 
