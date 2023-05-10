@@ -35,7 +35,7 @@ metadata:
   name: mysql-db-service
 spec:
   selector:
-    app: mysql-db
+    app: mysql-db-deployment
   ports:
     - port: 3306
       targetPort: 3306
