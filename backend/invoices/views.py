@@ -1,9 +1,8 @@
 from rest_framework import generics, permissions
-from rest_framework.response import Response
 
 from .models import Invoice
-from .serializers import InvoiceCreateSerializer, InvoiceDetailsSerializer
-from .permissions import IsOwnerOrReadOnly
+from .serializers import InvoiceCreateSerializer, InvoiceDetailsSerializer, BillDetailsSerializer
+from .permissions import IsOwnerOrReadOnly, IsClientOrReadOnly
 
 class InvoiceCreateAPI(generics.CreateAPIView):
     queryset = Invoice.objects.all()
@@ -43,6 +42,15 @@ class ClientInvoicesListAPI(generics.ListAPIView):
 class BillsListAPI(generics.ListAPIView):
     serializer_class = InvoiceDetailsSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Invoice.objects.filter(client=self.request.user)
+
+
+class BillDetailAPI(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BillDetailsSerializer
+    permission_classes = [permissions.IsAuthenticated, IsClientOrReadOnly]
+    lookup_field = 'id'
 
     def get_queryset(self):
         return Invoice.objects.filter(client=self.request.user)

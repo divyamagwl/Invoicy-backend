@@ -34,3 +34,14 @@ class InvoiceDetailsSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'client', 'invoiceDate', 'dueDate', 
                   'totalAmount', 'dueAmount', 'advancePercent', 'workCompleted', 'note', 'items')
         read_only_fields = ('id', 'user', 'client', 'items')
+
+
+class BillDetailsSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True)
+
+    class Meta:
+        model = Invoice
+        fields = ('id', 'user', 'client', 'invoiceDate', 'dueDate', 
+                  'totalAmount', 'dueAmount', 'advancePercent', 'workCompleted', 'note', 'items')
+        read_only_fields = ('id', 'user', 'client', 'invoiceDate', 'dueDate', 
+                  'totalAmount', 'advancePercent', 'workCompleted', 'note', 'items')
