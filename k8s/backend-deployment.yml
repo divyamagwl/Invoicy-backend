@@ -23,9 +23,9 @@ spec:
               name: invoicy-backend-prod-env
         env:
           - name: PORT
-            value: "8002"
+            value: "8000"
         ports:
-        - containerPort: 8002
+        - containerPort: 8000
 
 
 ---
@@ -40,6 +40,6 @@ spec:
   loadBalancerIP: "0.0.0.0"
   ports:
     - protocol: TCP
-      port: 8002
-      targetPort: 8002
+      port: 8000
+      targetPort: 8000
       nodePort: 30000
