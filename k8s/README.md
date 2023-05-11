@@ -14,13 +14,13 @@ Create Secrets
 
     kubectl create secret generic invoicy-backend-prod-env --from-env-file=../backend/invoicy/.env.prod
 
-Delete Backend Deployment and Service (if exists)
+Delete All Deployments and Services (if exists)
 
-    kubectl delete -f backend-deployment.yml
+    kubectl delete -f .
 
-Build Backend Deployment and Service
+Build All Deployments and Services
 
-    kubectl apply -f backend-deployment.yml
+    kubectl apply -f .
 
 Deployment Status
 

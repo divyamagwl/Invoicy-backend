@@ -1,3 +1,19 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql-pv-claim
+    tier: database
+spec:
+  storageClassName: invoicy-pv-volume
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,9 +40,11 @@ spec:
         - containerPort: 3306
         volumeMounts:
           - mountPath: /var/lib/mysql
-            name: mysql-db-volume
+            name: mysql-persistance-storage
       volumes:
-        - name: mysql-db-volume
+        - name: mysql-persistance-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
 
 ---
 apiVersion: v1
