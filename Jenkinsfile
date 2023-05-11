@@ -32,5 +32,13 @@ pipeline {
                 }
             }
         }
+        stage('Ansible Deployment') {
+            steps {
+                ansiblePlaybook colorized: true,
+                installation: 'Ansible',
+                inventory: 'inventory',
+                playbook: 'playbook.yml'
+            }
+        }
     }
 }
