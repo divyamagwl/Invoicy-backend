@@ -8,10 +8,6 @@
       changed_when: false
       failed_when: false
 
-    - name: Printing Minikube status
-      debug:
-        var: minikube_status
-
     - name: Start Minikube
       become: false
       command: minikube start --cpus 4 --memory 8192
@@ -25,7 +21,7 @@
     - name: Setting Config and Secrets
       shell: |
         kubectl delete secrets invoicy-backend-prod-env
-        kubectl create secret generic invoicy-backend-prod-env --from-env-file=./backend/invoicy/.env.prod
+        kubectl create secret generic invoicy-backend-prod-env --from-env-file="/Users/divyam/Semester 8/SPE/MajorProject/Invoicy-backend/backend/invoicy/.env.prod"
       ignore_errors: true
 
     - name: Applying K8s Command in Repository
@@ -33,19 +29,10 @@
         cd ./k8s/
         kubectl delete -f .
         kubectl apply -f .
-      register: applying_K8s
       changed_when: false
       failed_when: false
-
-    - name: Debugging Logs
-      debug:
-        var: applying_K8s
 
     - name: Applying migrations
       shell: |
         export POD_LATEST=$(kubectl get pod -l app=invoicy-backend-deployment -o jsonpath="{.items[0].metadata.name}")
         kubectl exec -it $POD_LATEST -- bash /app/migrate.sh  
-
-    - name: Applying migrations
-      shell: |
-        minikube tunnel
