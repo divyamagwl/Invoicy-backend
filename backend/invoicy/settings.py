@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', default='74ts(iz!f4=k+tt@#fcccn@c3#!2xarr+l9ee*)q%4#j^v#o9!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(env('DEBUG')) == "1"
+DEBUG = str(env('DEBUG', default="1")) == "1"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -91,11 +91,11 @@ DATABASES = {
     }
 }
 
-DB_DATABASE = env('MYSQL_DATABASE')
-DB_USERNAME = env('MYSQL_USER')
-DB_PASSWORD = env('MYSQL_PASSWORD')
-DB_HOST = env('MYSQL_ROOT_HOST')
-DB_PORT = env('MYSQL_PORT')
+DB_DATABASE = env('MYSQL_DATABASE', default="invoicy")
+DB_USERNAME = env('MYSQL_USER', default="root")
+DB_PASSWORD = env('MYSQL_PASSWORD', default="Test@1234")
+DB_HOST = env('MYSQL_ROOT_HOST', default="localhost")
+DB_PORT = env('MYSQL_PORT', default=3306)
 
 DB_IS_AVAIL = all([
     DB_DATABASE,
