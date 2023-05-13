@@ -1,11 +1,12 @@
 #!/bin/sh
 
-python3 -m venv env
-
-source env/bin/activate
-
 ls
-pip -V
+python3 -m venv venv
+
+source venv/bin/activate
+
+ls 
+pip3 -V
 
 pip3 install -r backend/requirements.txt
 
