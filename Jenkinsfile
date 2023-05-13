@@ -15,27 +15,12 @@ pipeline {
             }
         }
 
-        stage("Install Python Virtual Enviroment") {
-            steps {
-                sh 'virtualenv --no-site-packages .'
-            }
-        }           
-        stage ("Install Application Dependencies") {
+        stage('Setup Python Virtual Environment'){
             steps {
                 sh '''
-                    source bin/activate
-                    pip install -r backend/requirements.txt
-                    deactivate
-                '''
-            }
-        }
-        stage ("Run Unit/Integration Tests") {
-            steps {
-                sh '''
-                    source ../bin/activate
-                    python3 backend/manage.py test
-                    deactivate
-                '''
+                    chmod +x envsetup.sh
+                    ./envsetup.sh
+                    '''
             }
         }
 
