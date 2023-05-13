@@ -1,12 +1,8 @@
 #!/bin/sh
 
-if [ -d "env" ] 
-then
-    echo "Python virtual environment exists." 
-else
-    python3 -m venv env
-fi
+python3 -m venv env
 
+ls
 source env/bin/activate
 
 pip3 install -r backend/requirements.txt
