@@ -179,7 +179,7 @@ class UpdateUserTest(TestCase):
     def test_valid_update_user(self):
         response = self.client.put(
             reverse('user-detail', kwargs={'username': self.john.username}),
-            data=json.dumps(self.valid_payload),
+            data=json.dumps(self.invalid_payload),
             content_type='application/json'
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
