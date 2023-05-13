@@ -23,6 +23,17 @@ pipeline {
                     '''
             }
         }
+
+        stage('Run Django Tests'){
+            steps {
+                sh '''
+                    source venv/bin/activate
+                    python3 backend/manage.py test ./backend
+                    deactivate
+                    '''
+            }
+        }
+
     //     stage('Docker Image Build') {
     //         steps {
     //             dir("backend/") {
