@@ -34,31 +34,33 @@ pipeline {
             }
         }
 
-    //     stage('Docker Image Build') {
-    //         steps {
-    //             dir("backend/") {
-    //                 script {
-    //                     dockerImage = docker.build(registry + ":latest")
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     stage('DockerHub Image Push') {
-    //         steps {
-    //             script {
-    //                 docker.withRegistry('', registryCredential) {
-    //                     dockerImage.push()
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     stage('Ansible Deployment') {
-    //         steps {
-    //             ansiblePlaybook colorized: true,
-    //             installation: 'Ansible',
-    //             inventory: 'inventory',
-    //             playbook: 'playbook.yml'
-    //         }
-    //     }
+        stage('Docker Image Build') {
+            steps {
+                dir("backend/") {
+                    script {
+                        dockerImage = docker.build(registry + ":latest")
+                    }
+                }
+            }
+        }
+
+        stage('DockerHub Image Push') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Ansible Deployment') {
+            steps {
+                ansiblePlaybook colorized: true,
+                installation: 'Ansible',
+                inventory: 'inventory',
+                playbook: 'playbook.yml'
+            }
+        }
     }
 }
