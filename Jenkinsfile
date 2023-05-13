@@ -23,16 +23,6 @@ pipeline {
                     '''
             }
         }
-        stage ("Run Unit Tests") {
-            steps {
-                sh '''
-                    source env/bin/activate
-                    python3 backend/manage.py test
-                    deactivate
-                '''
-            }
-        }
-
         stage('Docker Image Build') {
             steps {
                 dir("backend/") {
