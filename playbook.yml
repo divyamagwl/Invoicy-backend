@@ -34,5 +34,4 @@
 
     - name: Applying migrations
       shell: |
-        export POD_LATEST=$(kubectl get pod -l app=invoicy-backend-deployment -o jsonpath="{.items[0].metadata.name}")
-        kubectl exec -it $POD_LATEST -- bash /app/migrate.sh  
+        kubectl exec -it $(kubectl get pod -l app=invoicy-backend-deployment -o jsonpath="{.items[0].metadata.name}") -- bash /app/migrate.sh
