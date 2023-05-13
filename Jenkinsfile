@@ -15,36 +15,27 @@ pipeline {
             }
         }
 
-        def installed = fileExists 'bin/activate'
-        if (!installed) {
-            stage("Install Python Virtual Enviroment") {
+        stage("Install Python Virtual Enviroment") {
+            steps {
                 sh 'virtualenv --no-site-packages .'
             }
         }           
         stage ("Install Application Dependencies") {
-            sh '''
-                source bin/activate
-                pip install -r backend/requirements.txt
-                deactivate
-            '''
+            steps {
+                sh '''
+                    source bin/activate
+                    pip install -r backend/requirements.txt
+                    deactivate
+                '''
+            }
         }
         stage ("Run Unit/Integration Tests") {
-            def testsError = null
-            try {
+            steps {
                 sh '''
                     source ../bin/activate
                     python3 backend/manage.py test
                     deactivate
                 '''
-            }
-            catch(err) {
-                testsError = err
-                currentBuild.result = 'FAILURE'
-            }
-            finally {
-                if (testsError) {
-                    throw testsError
-                }
             }
         }
 
