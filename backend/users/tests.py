@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token                                  
 
 from .models import CustomUser
-from .serializers import UsersSerializer, UserUpdateSerializer, UserRegistrationSerializer
+from .serializers import UsersSerializer, UserUpdateSerializer
 
 # initialize the APIClient app
 client = Client()
