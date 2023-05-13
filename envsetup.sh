@@ -10,10 +10,6 @@ source venv/bin/activate
 
 pip3 install -r backend/requirements.txt
 
-pip3 -V
-
-cat backend/users/tests.py
-
-python3 backend/manage.py test
+python3 backend/manage.py test ./backend
 
 deactivate
