@@ -4,6 +4,7 @@ python3 -m venv env
 
 source env/bin/activate
 
+ls
 pip -V
 
 pip3 install -r backend/requirements.txt
