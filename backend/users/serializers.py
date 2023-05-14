@@ -7,6 +7,7 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'company_name', 'username', 'email', 'is_verified')
+        read_only_fields = ('is_verified', )
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -52,8 +53,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'company_name', 'username',
-                  'email', 'password')
-        read_only_fields = ('username', 'email', 'password')
+                  'email', 'password', 'is_verified')
+        read_only_fields = ('username', 'email', 'password', 'is_verified')
 
 
 class UpdatePasswordSerializer(serializers.Serializer):
