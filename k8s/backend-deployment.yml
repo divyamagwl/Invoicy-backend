@@ -26,7 +26,20 @@ spec:
             value: "8000"
         ports:
         - containerPort: 8000
-
+        volumeMounts:
+          - name: log-dir
+            mountPath: /app/logs/
+          - name: logs
+            mountPath: /app/logs/debug.log
+      volumes:
+        - name: log-dir
+          hostPath:
+            path: /var/logs
+            type: DirectoryOrCreate
+        - name: logs
+          hostPath:
+            path: /var/logs/debug.log
+            type: FileOrCreate
 
 ---
 apiVersion: v1

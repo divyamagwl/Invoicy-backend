@@ -1,0 +1,60 @@
+version: '2'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10-arm64
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
+    networks:
+      - elastic
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.10-arm64
+    container_name: logstash
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+    ports:
+      - 5044:5044
+      - 50000:50000/tcp
+      - 50000:50000/udp
+      - 9600:9600
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.10-arm64
+    container_name: kibana
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.10-arm64
+    container_name: filebeat
+    volumes:
+      - ./backend/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./backend/logs:/usr/share/filebeat/logs
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      - elastic
+    links:
+      - kibana
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+
+networks:
+  elastic:
+    driver: bridge
