@@ -10,13 +10,8 @@
 
     - name: Start Minikube
       become: false
-      command: minikube start --cpus 4 --memory 8192
+      command: minikube start
       when: "'Running' not in minikube_status.stdout"
-
-    - name: Installing Addons
-      become: false
-      command: minikube addons enable ingress
-      ignore_errors: true
 
     - name: Setting Config and Secrets
       shell: |
