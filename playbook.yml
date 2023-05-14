@@ -1,5 +1,7 @@
 - name: Deployment on K8 cluster
   hosts: host_machine
+  vars:
+    env_path: "$HOME/Semester 8/SPE/MajorProject/Invoicy-backend/backend/invoicy/.env.prod"
   tasks:
 
     - name: Check Minikube status
@@ -16,7 +18,7 @@
     - name: Setting Config and Secrets
       shell: |
         kubectl delete secrets invoicy-backend-prod-env
-        kubectl create secret generic invoicy-backend-prod-env --from-env-file="/Users/divyam/Semester 8/SPE/MajorProject/Invoicy-backend/backend/invoicy/.env.prod"
+        kubectl create secret generic invoicy-backend-prod-env --from-env-file={{ env_path }}
       ignore_errors: true
 
     - name: Applying K8s Command in Repository
