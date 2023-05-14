@@ -1,7 +1,7 @@
 - name: Deployment on K8 cluster
   hosts: host_machine
   vars:
-    env_path: "Users/divyam/Semester 8/SPE/MajorProject/Invoicy-backend/backend/invoicy/.env.prod"
+    env_path: "/Users/divyam/Semester 8/SPE/MajorProject/Invoicy-backend/backend/invoicy/.env.prod"
   tasks:
 
     - name: Check Minikube status
