@@ -3,12 +3,13 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 from users.models import CustomUser
-from users.serializers import UsersSerializer, UserRegistrationSerializer, UserLoginSerializer, UserUpdateSerializer, UpdatePasswordSerializer
+from users.serializers import UsersSerializer, UserRegistrationSerializer, UserLoginSerializer, UserUpdateSerializer, UpdatePasswordSerializer, VerificationSerializer
 from users.permissions import IsOwnerOrReadOnly
 
 from django.contrib.auth import login
 from rest_framework.authentication import TokenAuthentication
 
+from .email import send_otp_via_email
 
 class UsersListAPI(generics.ListCreateAPIView):
     serializer_class = UsersSerializer
@@ -29,6 +30,7 @@ class RegisterAPI(generics.ListCreateAPIView):
             if user:
                 token = Token.objects.create(user=user)
                 details = serializer.data
+                send_otp_via_email(details["email"])
                 details['token'] = token.key
                 return Response(details, status=status.HTTP_201_CREATED)
 
@@ -114,3 +116,29 @@ class LogoutAPI(views.APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+
+class VerifyOTPAPI(generics.CreateAPIView):
+    serializer_class = VerificationSerializer
+
+    def post(self, request):
+        serializer = VerificationSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.data["email"]
+            otp = serializer.data["otp"]
+
+            user = CustomUser.objects.filter(email = email)
+
+            if not user.exists():
+                return Response({"message": "Something went wrong", "data": "Invalid email"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user = user.first()
+            if user.otp != otp:
+                return Response({"message": "Something went wrong", "data": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+            user.is_verified = True
+            user.save()
+            return Response({"message": "Account Verified Successfully", "data": ""}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

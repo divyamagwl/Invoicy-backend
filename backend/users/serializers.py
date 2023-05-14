@@ -6,7 +6,7 @@ from .models import CustomUser
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'company_name', 'username', 'email')
+        fields = ('id', 'company_name', 'username', 'email', 'is_verified')
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -59,3 +59,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class UpdatePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+
+class VerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'otp')

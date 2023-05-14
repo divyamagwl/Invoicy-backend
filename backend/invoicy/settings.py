@@ -201,3 +201,13 @@ os.makedirs(logs_dir, exist_ok=True)
 debug_log_file = os.path.join(logs_dir, 'debug.log')
 if not os.path.exists(debug_log_file):
     open(debug_log_file, 'w').close()
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'bhddivyam@gmail.com'
+EMAIL_HOST_PASSWORD = env('GMAIL_APP_PASSWORD', default='invalid')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
