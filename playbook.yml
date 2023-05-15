@@ -29,22 +29,14 @@
       changed_when: false
       failed_when: false
 
-    - name: Wait for pod to become ready
-      shell: kubectl wait --for=condition=Ready pod -l app=invoicy-backend-deployment
-      register: wait_result
-      until: wait_result.rc == 0
-      retries: 10
-      delay: 10
+    # - name: Wait for pod to become ready
+    #   shell: kubectl wait --for=condition=Ready pod -l app=invoicy-backend-deployment
+    #   register: wait_result
+    #   until: wait_result.rc == 0
+    #   retries: 10
+    #   delay: 10
 
-    - name: Wait for MYSQL to become ready
-      shell: kubectl wait --for=condition=Ready pod -l app=mysql-db-deployment
-      register: wait_result_2
-      until: wait_result_2.rc == 0
-      retries: 10
-      delay: 10
-      when: wait_result.rc == 0
-
-    - name: Applying migrations
-      shell: |
-        kubectl exec -it $(kubectl get pod -l app=invoicy-backend-deployment -o jsonpath="{.items[0].metadata.name}") -- bash /app/migrate.sh
-      when: wait_result_2.rc == 0
+    # - name: Applying migrations
+    #   shell: |
+    #     kubectl exec -it $(kubectl get pod -l app=invoicy-backend-deployment -o jsonpath="{.items[0].metadata.name}") -- bash /app/migrate.sh
+    #   when: wait_result.rc == 0
