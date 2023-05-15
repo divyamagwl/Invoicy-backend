@@ -45,3 +45,7 @@ class BillDetailsSerializer(serializers.ModelSerializer):
                   'totalAmount', 'dueAmount', 'advancePercent', 'workCompleted', 'note', 'items')
         read_only_fields = ('id', 'user', 'client', 'invoiceDate', 'dueDate', 
                   'totalAmount', 'advancePercent', 'workCompleted', 'note', 'items')
+        
+
+class SendReminderSerializer(serializers.Serializer):
+    id = serializers.CharField(required=True)

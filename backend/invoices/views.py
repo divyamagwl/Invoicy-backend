@@ -1,8 +1,12 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, status, permissions, views
+from rest_framework.response import Response
 
 from .models import Invoice
-from .serializers import InvoiceCreateSerializer, InvoiceDetailsSerializer, BillDetailsSerializer
+from .serializers import InvoiceCreateSerializer, InvoiceDetailsSerializer, BillDetailsSerializer, SendReminderSerializer
 from .permissions import IsOwnerOrReadOnly, IsClientOrReadOnly
+
+from .email import send_reminder_via_email
+from users.models import CustomUser
 
 class InvoiceCreateAPI(generics.CreateAPIView):
     queryset = Invoice.objects.all()
@@ -54,3 +58,43 @@ class BillDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Invoice.objects.filter(client=self.request.user)
+    
+
+class SendReminderAPI(views.APIView):
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+
+    def post(self, request):
+        serializer = SendReminderSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            invoiceid = serializer.data["id"]
+
+            try:
+                invoice = Invoice.objects.get(id = invoiceid)
+            except:
+                return Response({"message": "Something went wrong", "data": "Invalid invoice"}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                user = CustomUser.objects.get(id = invoice.user.id)
+            except:
+                return Response({"message": "Something went wrong", "data": "Invalid user"}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                client = CustomUser.objects.get(id = invoice.client.id)
+            except:
+                return Response({"message": "Something went wrong", "data": "Invalid client"}, status=status.HTTP_400_BAD_REQUEST)
+
+            message = f"""This is a gentle reminder to please pay the bill for the following invoice - \n
+            Company name - {user.company_name}\n
+            Invoice id - {invoice.id}\n
+            Invoice date - {invoice.invoiceDate}\n
+            Invoice due date - {invoice.dueDate}\n
+            Invoice due amount - {invoice.dueAmount} Rupees\n
+            Invoice work completed - {invoice.workCompleted}\n
+            """
+
+            send_reminder_via_email(client.email, message)
+
+            return Response({"message": "Reminder sent Successfully", "data": ""}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
