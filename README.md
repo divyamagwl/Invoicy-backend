@@ -41,10 +41,10 @@ Update the fields in .env file as follows:
 ## Migrating the Database
 To migrate the database, run the following commands:
 
-    python manage.py makemigrations
-    python manage.py migrate
+    python3 manage.py makemigrations
+    python3 manage.py migrate
 
 ## Starting the server
 To start the server, run the following command:
 
-    python manage.py runserver
+    python3 manage.py runserver
