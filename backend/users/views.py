@@ -52,6 +52,7 @@ class LoginAPI(generics.GenericAPIView):
                 data = {
                     'user_id': user.id,
                     'username': user.username,
+                    'company_name': user.company_name,
                     'token': token.key,
                     'message': 'Logged in successfully'
                 }
